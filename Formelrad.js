@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import '../css/mvp.css';
 import formelrad from "../image/formelradelektronik.gif";
 import InputField from "../formular/InputField";
@@ -30,10 +30,16 @@ export default function Formelrad() {
         });
     }
 
+    const handleClear = (event) => {
+        event.preventDefault();
+        console.log("handleClear");
+        setValues({ u: "", i: "", r: "", p: "", message: "" });
+        resetColors();
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log("handleSubmit");
-
         resetColors();
 
         let count = 0;
@@ -43,9 +49,9 @@ export default function Formelrad() {
         if (values.p === "") count++;
 
         if (count !== 2) {
-            setValues(values => ({...values, message: "2 Felder leer lassen, 2 Felder ausfüllen"}));
+            setValues(values => ({ ...values, message: "2 Felder leer lassen, 2 Felder ausfüllen" }));
         } else {
-            setValues(values => ({...values, message: ""}));
+            setValues(values => ({ ...values, message: "" }));
 
             if (values.u === "" && values.i === "") {
                 setValues(values => ({
@@ -53,42 +59,42 @@ export default function Formelrad() {
                     u: Math.sqrt(values.p * values.r),
                     i: Math.sqrt(values.p / values.r)
                 }));
-                setColors(colors => ({...colors, u: "red", i: "red"}));
+                setColors(colors => ({ ...colors, u: "red", i: "red" }));
             } else if (values.u === "" && values.r === "") {
                 setValues(values => ({
                     ...values,
                     u: values.p / values.i,
                     r: values.p / values.i / values.i
                 }));
-                setColors(colors => ({...colors, u: "red", r: "red"}));
+                setColors(colors => ({ ...colors, u: "red", r: "red" }));
             } else if (values.u === "" && values.p === "") {
                 setValues(values => ({
                     ...values,
                     u: values.i * values.r,
                     p: values.i * values.i * values.r
                 }));
-                setColors(colors => ({...colors, u: "red", p: "red"}));
+                setColors(colors => ({ ...colors, u: "red", p: "red" }));
             } else if (values.i === "" && values.r === "") {
                 setValues(values => ({
                     ...values,
                     i: values.p / values.u,
                     r: values.u * values.u / values.p
                 }));
-                setColors(colors => ({...colors, i: "red", r: "red"}));
+                setColors(colors => ({ ...colors, i: "red", r: "red" }));
             } else if (values.i === "" && values.p === "") {
                 setValues(values => ({
                     ...values,
                     i: values.u / values.r,
                     p: values.u * values.u / values.r
                 }));
-                setColors(colors => ({...colors, i: "red", p: "red"}));
+                setColors(colors => ({ ...colors, i: "red", p: "red" }));
             } else {
                 setValues(values => ({
                     ...values,
                     r: values.u / values.i,
                     p: values.u * values.i
                 }));
-                setColors(colors => ({...colors, r: "red", p: "red"}));
+                setColors(colors => ({ ...colors, r: "red", p: "red" }));
             }
         }
     }
@@ -98,15 +104,17 @@ export default function Formelrad() {
             <section>
                 <header>
                     <h2>Formelrad</h2>
-                    <img src={formelrad} width="200" alt="Formelrad"/>
+                    <img src={formelrad} width="200" alt="Formelrad" />
+                    <p>Zwei Werte eingeben, die anderen werden berechnet.</p>
                 </header>
                 <form onSubmit={handleSubmit}>
-                    <InputField color={colors.u} value={values.u} label="Spannung" handleChange={e => {setValues(values => ({...values, u: e.target.value}))}} />
-                    <InputField color={colors.i} value={values.i} label="Stromstärke" handleChange={e => {setValues(values => ({...values, i: e.target.value}))}} />
-                    <InputField color={colors.r} value={values.r} label="Widerstand" handleChange={e => {setValues(values => ({...values, r: e.target.value}))}} />
-                    <InputField color={colors.p} value={values.p} label="Leistung" handleChange={e => {setValues(values => ({...values, p: e.target.value}))}} />
+                    <InputField color={colors.u} value={values.u} label="Spannung" handleChange={e => { setValues(values => ({ ...values, u: e.target.value })) }} />
+                    <InputField color={colors.i} value={values.i} label="Stromstärke" handleChange={e => { setValues(values => ({ ...values, i: e.target.value })) }} />
+                    <InputField color={colors.r} value={values.r} label="Widerstand" handleChange={e => { setValues(values => ({ ...values, r: e.target.value })) }} />
+                    <InputField color={colors.p} value={values.p} label="Leistung" handleChange={e => { setValues(values => ({ ...values, p: e.target.value })) }} />
                     <button type="submit">Calculate</button>
-                    <p style={{color: colors.message}}>{values.message}</p>
+                    <button style={{ margin: 10 }} onClick={handleClear}>Clear</button>
+                    <p style={{ color: colors.message }}>{values.message}</p>
                 </form>
             </section>
         </>
