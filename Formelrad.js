@@ -36,7 +36,6 @@ export default function Formelrad() {
 
         resetColors();
 
-        // Anzahl leerer Felder zählen
         let count = 0;
         if (values.u === "") count++;
         if (values.i === "") count++;
